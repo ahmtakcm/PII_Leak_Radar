@@ -1,0 +1,11 @@
+﻿Bu klasör Telegram / Discord export dosyaları içindir.
+
+Desteklenen formatlar:
+- Telegram Desktop JSON export: result.json
+- DiscordChatExporter JSON
+- Basit .txt log/export
+- Basit .html export
+
+Kural:
+Bu parser yalnızca kullanıcı tarafından sağlanan export dosyalarını offline analiz eder.
+Kapalı gruba katılım, bot ile veri çekme, yetkisiz erişim veya credential kullanımı yapmaz.

@@ -1,0 +1,137 @@
+﻿# PII Leak Radar Scope Configuration
+# Sprint 3 — Source Activation & Safe Connectors
+
+version: "3.0"
+project: "PII Leak Radar"
+mode: "dry-run"
+alerts_enabled: false
+mask_sensitive: true
+
+purpose:
+  - "OSINT"
+  - "defense"
+  - "forensic_review"
+  - "risk_monitoring"
+
+global_rules:
+  unauthorized_access_allowed: false
+  credential_use_allowed: false
+  bypass_allowed: false
+  exploit_allowed: false
+  illegal_market_transaction_allowed: false
+  closed_group_intrusion_allowed: false
+  raw_sensitive_output_allowed: false
+  alerts_enabled: false
+
+allowed_source_classes:
+  user_provided_exports: true
+  manual_import_sources: true
+  public_feeds: true
+  public_code_search_scoped: true
+  vendor_advisories: true
+  owned_telegram_ingest: true
+  owned_discord_ingest: true
+
+review_required_source_classes:
+  paste_leak_manual_review: "manual_review_required"
+  high_risk_darkweb_intel: "legal_review_required"
+  illegal_market_context: "legal_review_required"
+  closed_group_context: "legal_review_required"
+
+denied_actions:
+  - "join_closed_telegram_group"
+  - "join_closed_discord_server"
+  - "crawl_illegal_market"
+  - "purchase_or_trade_illegal_data"
+  - "use_credentials"
+  - "bypass_access_controls"
+  - "exploit_systems"
+  - "dump_or_exfiltrate_data"
+
+allowed_actions:
+  - "parse_user_provided_exports"
+  - "parse_manual_import_files"
+  - "fetch_open_public_feeds"
+  - "scan_scoped_public_code"
+  - "review_vendor_advisories"
+  - "ingest_owned_telegram_messages"
+  - "ingest_owned_discord_messages"
+  - "classify_risk_context"
+  - "match_assets_with_masking"
+  - "write_sanitized_reports"
+
+organization_scope:
+  enabled: false
+  names: []
+  domains: []
+  keywords: []
+  notes: "Gerçek kurum/domain/keyword bilgilerini sadece lokal dosyada doldur. Sohbete yazma."
+
+public_code_search_scope:
+  enabled: false
+  allowed_domains: []
+  allowed_keywords: []
+  allowed_repositories: []
+  denied_keywords:
+    - "password"
+    - "token"
+    - "secret"
+    - "apikey"
+  notes: "Scope tanımlanmadan public code search connector otomatik çalışmamalı."
+
+telegram_scope:
+  user_provided_exports_enabled: true
+  owned_ingest_enabled: false
+  allowed_channel_ids: []
+  allowed_group_ids: []
+  allowed_public_channels: []
+  denied_actions:
+    - "auto_join_group"
+    - "scrape_closed_group"
+    - "bypass_invite"
+  notes: "Sadece kullanıcı exportları veya sahip/izinli kanallar."
+
+discord_scope:
+  user_provided_exports_enabled: true
+  owned_ingest_enabled: false
+  allowed_server_ids: []
+  allowed_channel_ids: []
+  denied_actions:
+    - "auto_join_server"
+    - "scrape_closed_server"
+    - "bypass_invite"
+  notes: "Sadece kullanıcı exportları veya sahip/izinli sunucular."
+
+paste_scope:
+  manual_review_enabled: true
+  automatic_crawling_enabled: false
+  allowed_sources: []
+  denied_actions:
+    - "bulk_scrape_paste_sites"
+    - "collect_raw_credentials"
+  notes: "Paste kaynakları manual review/import çizgisinde tutulur."
+
+high_risk_context_keywords:
+  - "leak"
+  - "dump"
+  - "combo"
+  - "database"
+  - "market"
+  - "panel"
+  - "stealer"
+  - "credential"
+  - "password"
+  - "telegram"
+  - "discord"
+  - "invite"
+  - "davet"
+  - "satilik"
+  - "satis"
+  - "bot"
+
+reporting:
+  write_json: true
+  write_html: true
+  dashboard_enabled: true
+  mask_sensitive: true
+  raw_sensitive_output: false

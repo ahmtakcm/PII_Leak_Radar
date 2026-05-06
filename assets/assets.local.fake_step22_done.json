@@ -1,0 +1,63 @@
+﻿{
+    "schema_version":  "2.0",
+    "project":  "PII Leak Radar",
+    "mode":  "local",
+    "description":  "Step 22 fake local asset test. Gerçek veri değildir.",
+    "default_context_keywords":  [
+                                     "leak",
+                                     "dump",
+                                     "combo",
+                                     "database",
+                                     "telegram",
+                                     "discord",
+                                     "market",
+                                     "satilik",
+                                     "satis",
+                                     "sizinti",
+                                     "breach",
+                                     "panel",
+                                     "log",
+                                     "stealer"
+                                 ],
+    "assets":  [
+                   {
+                       "asset_id":  "local_test_person_001",
+                       "asset_kind":  "person",
+                       "display_name":  "Local Test Person",
+                       "sensitivity":  "high",
+                       "aliases":  [
+                                       "localtest",
+                                       "lt_person"
+                                   ],
+                       "emails":  [
+                                      "local.test@example.org"
+                                  ],
+                       "phones":  [
+                                      "+905559998877"
+                                  ],
+                       "usernames":  [
+                                         "localtestuser"
+                                     ],
+                       "keywords":  [
+                                        "local test özel risk"
+                                    ],
+                       "enabled":  true
+                   },
+                   {
+                       "asset_id":  "local_test_domain_001",
+                       "asset_kind":  "domain",
+                       "display_name":  "Local Test Domain",
+                       "sensitivity":  "medium",
+                       "domains":  [
+                                       "local-example.org"
+                                   ],
+                       "subdomains":  [
+                                          "login.local-example.org"
+                                      ],
+                       "keywords":  [
+                                        "local-example dump"
+                                    ],
+                       "enabled":  true
+                   }
+               ]
+}

@@ -1,0 +1,108 @@
+﻿{
+    "schema_version":  "2.0",
+    "project":  "PII Leak Radar",
+    "mode":  "sample",
+    "description":  "Sprint 2 Asset Scope örnek varlık tanımları. Gerçek takip değerleri assets.local.json içinde tutulmalıdır.",
+    "safety":  {
+                   "purpose":  "OSINT, savunma, adli bilişim ve risk izleme",
+                   "raw_sensitive_output":  false,
+                   "illegal_access_allowed":  false,
+                   "notes":  [
+                                 "Yetkisiz erişim yapılmaz.",
+                                 "Credential, bypass, exploit veya kapalı kaynak erişimi kullanılmaz.",
+                                 "Illegal grup veya market ifadeleri yalnızca risk bağlamı olarak değerlendirilir."
+                             ]
+               },
+    "default_context_keywords":  [
+                                     "leak",
+                                     "dump",
+                                     "combo",
+                                     "database",
+                                     "telegram",
+                                     "discord",
+                                     "market",
+                                     "satilik",
+                                     "satis",
+                                     "sizinti",
+                                     "breach",
+                                     "panel",
+                                     "log",
+                                     "stealer"
+                                 ],
+    "assets":  [
+                   {
+                       "asset_id":  "person_001",
+                       "asset_kind":  "person",
+                       "display_name":  "Sample Person",
+                       "sensitivity":  "high",
+                       "aliases":  [
+                                       "sample person",
+                                       "s_person"
+                                   ],
+                       "emails":  [
+                                      "sample.person@example.com"
+                                  ],
+                       "phones":  [
+                                      "+905551112233"
+                                  ],
+                       "usernames":  [
+                                         "sampleperson"
+                                     ],
+                       "keywords":  [
+                                        "sample person leak"
+                                    ],
+                       "enabled":  true
+                   },
+                   {
+                       "asset_id":  "org_001",
+                       "asset_kind":  "organization",
+                       "display_name":  "Example Organization",
+                       "sensitivity":  "medium",
+                       "aliases":  [
+                                       "example org",
+                                       "exorg"
+                                   ],
+                       "domains":  [
+                                       "example.com"
+                                   ],
+                       "emails":  [
+                                      "security@example.com"
+                                  ],
+                       "usernames":  [
+
+                                     ],
+                       "keywords":  [
+                                        "example database",
+                                        "example leak"
+                                    ],
+                       "enabled":  true
+                   },
+                   {
+                       "asset_id":  "domain_001",
+                       "asset_kind":  "domain",
+                       "display_name":  "Example Domain",
+                       "sensitivity":  "medium",
+                       "domains":  [
+                                       "example.net"
+                                   ],
+                       "subdomains":  [
+                                          "login.example.net",
+                                          "api.example.net"
+                                      ],
+                       "keywords":  [
+                                        "example.net dump"
+                                    ],
+                       "enabled":  true
+                   },
+                   {
+                       "asset_id":  "keyword_001",
+                       "asset_kind":  "custom_keyword",
+                       "display_name":  "Sample Risk Keyword",
+                       "sensitivity":  "low",
+                       "keywords":  [
+                                        "sample özel risk kelimesi"
+                                    ],
+                       "enabled":  true
+                   }
+               ]
+}

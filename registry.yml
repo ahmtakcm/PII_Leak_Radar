@@ -1,0 +1,213 @@
+﻿global:
+  project_name: "PII Leak Radar"
+  mode: "source_registry_sprint_1"
+  dry_run: true
+  alerts_enabled: false
+  store_raw_sensitive: false
+  mask_sensitive: true
+  dedup_enabled: true
+  dashboard_enabled: true
+  default_timeout_seconds: 30
+
+policy:
+  legal_notice: "Savunma/OSINT/adli bilişim amaçlı açık kaynak izleme. Yetkisiz erişim, credential kullanımı, exploit/bypass veya illegal market/grup işlemi yapılmaz."
+  action_by_risk:
+    critical: "Acil triage yap; kurum varlıklarıyla eşleştir; delil kaydını koru; ilgili teknik ekibe öncelikli bildirim hazırla."
+    high: "Öncelikli incele; SIEM/EDR/proxy/log korelasyonu yap; etkilenen ürün/domain/IP var mı kontrol et."
+    medium: "İzleme listesine al; tekrar görülme sıklığını ve kaynak güvenilirliğini takip et."
+    low: "Bilgi amaçlı kaydet; konfigürasyon veya kaynak erişim ayarlarını kontrol et."
+
+sources:
+  - id: cisa_kev
+    name: "CISA Known Exploited Vulnerabilities"
+    enabled: true
+    adapter: "cisa_kev"
+    category: "vulnerability_catalog"
+    legal_level: "open_public_feed"
+    review_priority: "urgent_if_asset_match"
+    risk_base: 85
+    limit: 100
+    url: "https://raw.githubusercontent.com/cisagov/kev-data/develop/known_exploited_vulnerabilities.json"
+    suggested_action: "KEV kaydı kurum envanterindeki ürünlerle eşleştirilmeli; eşleşme varsa patch/mitigation acil önceliklendirilmeli."
+
+  - id: nvd_recent
+    name: "NVD Recent CVE"
+    enabled: true
+    adapter: "nvd"
+    category: "vulnerability_database"
+    legal_level: "open_public_api"
+    review_priority: "asset_match_required"
+    risk_base: 65
+    days_back: 7
+    limit: 50
+    base_url: "https://services.nvd.nist.gov/rest/json/cves/2.0"
+    suggested_action: "CVE açıklaması ve CVSS değerleri kurum teknolojileriyle eşleştirilmeli; yüksek CVSS varsa takip listesine alınmalı."
+
+  - id: urlhaus_recent
+    name: "URLhaus Recent Malware URLs"
+    enabled: true
+    adapter: "urlhaus"
+    category: "malware_url_feed"
+    legal_level: "open_public_feed"
+    review_priority: "ioc_correlation"
+    risk_base: 75
+    limit: 50
+    url: "https://urlhaus.abuse.ch/downloads/csv_recent/"
+    suggested_action: "URL/domain IOC olarak proxy, DNS, EDR ve firewall loglarında aranmalı; erişim varsa olay incelemesi açılmalı."
+
+  - id: otx_subscribed
+    name: "AlienVault OTX Subscribed Pulses"
+    enabled: true
+    adapter: "otx"
+    category: "threat_intel_pulses"
+    legal_level: "open_api_requires_key"
+    review_priority: "api_key_optional"
+    risk_base: 70
+    limit: 25
+    base_url: "https://otx.alienvault.com"
+    env_api_key: "OTX_API_KEY"
+    suggested_action: "OTX pulse IOC'leri izinli telemetry üzerinde korele edilmeli; API key yoksa kaynak pasif/config notice olarak kalır."
+
+  - id: github_public_code_search
+    name: "GitHub Public Code Search - Scoped Defensive Review"
+    enabled: false
+    adapter: "github_code_search"
+    category: "public_code_search"
+    legal_level: "open_public_api_scope_required"
+    review_priority: "scope_required"
+    risk_base: 70
+    base_url: "https://api.github.com/search/code"
+    env_api_key: "GITHUB_TOKEN"
+    requires_scope: true
+    query_templates:
+      - "\"{organization_domain}\""
+      - "\"{organization_name}\""
+      - "\"{organization_domain}\" \"api_key\""
+      - "\"{organization_domain}\" \"password\""
+      - "\"{organization_domain}\" \"token\""
+    suggested_action: "Yalnızca izinli kurum domain/marka kapsamı ile public code search yapılmalı; bulunan secret/credential denenmeden bildirim ve kaldırma süreci işletilmeli."
+
+  - id: vendor_advisories
+    name: "Vendor Security Advisory Sources"
+    enabled: false
+    adapter: "vendor_advisory_placeholder"
+    category: "vendor_advisory"
+    legal_level: "open_public_web"
+    review_priority: "asset_match_required"
+    risk_base: 55
+    suggested_action: "Kurumun kullandığı ürün/vendor listesiyle eşleştirilerek vendor advisory kaynakları eklenmeli."
+
+  - id: paste_leak_manual_review
+    name: "Paste / Leak Manual Review Sources"
+    enabled: false
+    adapter: "manual_placeholder"
+    category: "paste_leak_review"
+    legal_level: "manual_review_required"
+    review_priority: "legal_review_required"
+    risk_base: 80
+    requires_scope: true
+    suggested_action: "Sadece açık webde erişilebilir ve izinli kapsamla ilişkili paste/leak göstergeleri manuel incelenmeli; credential denenmemeli, ham hassas veri yayılmamalı."
+
+  - id: pastebin_manual_review
+    name: "Pastebin Manual Review"
+    enabled: false
+    adapter: "manual_placeholder"
+    category: "paste_leak_review"
+    legal_level: "manual_review_required"
+    review_priority: "scope_required"
+    risk_base: 80
+    requires_scope: true
+    source_home: "https://pastebin.com"
+    suggested_action: "Pastebin bağlantıları yalnızca izinli kapsam ve manuel inceleme ile ele alınmalı; toplu scrape yapılmamalı, credential denenmemeli, ham hassas veri rapora yazılmamalı."
+
+  - id: github_gist_manual_review
+    name: "GitHub Gist Manual Review"
+    enabled: false
+    adapter: "manual_placeholder"
+    category: "paste_leak_review"
+    legal_level: "manual_review_required"
+    review_priority: "scope_required"
+    risk_base: 75
+    requires_scope: true
+    source_home: "https://gist.github.com"
+    suggested_action: "GitHub Gist bulguları kurum kapsamı ile doğrulanmalı; içerik çekmeden önce scope ve bildirim/rotasyon süreci netleştirilmeli."
+
+  - id: rentry_manual_review
+    name: "Rentry Manual Review"
+    enabled: false
+    adapter: "manual_placeholder"
+    category: "paste_leak_review"
+    legal_level: "manual_review_required"
+    review_priority: "scope_required"
+    risk_base: 75
+    requires_scope: true
+    source_home: "https://rentry.co"
+    suggested_action: "Rentry bağlantıları kullanıcı sağladıysa veya açık webde izinli kapsamla ilişkiliyse manuel incelenmeli; toplu tarama yapılmamalı."
+
+  - id: ghostbin_manual_review
+    name: "Ghostbin Manual Review"
+    enabled: false
+    adapter: "manual_placeholder"
+    category: "paste_leak_review"
+    legal_level: "manual_review_required"
+    review_priority: "scope_required"
+    risk_base: 75
+    requires_scope: true
+    source_home: "https://ghostbin.org"
+    suggested_action: "Ghostbin benzeri paste bağlantıları manuel delil notu olarak işlenmeli; erişim ve saklama kararları yasal kapsamla sınırlı tutulmalı."
+
+  - id: controlc_manual_review
+    name: "ControlC Manual Review"
+    enabled: false
+    adapter: "manual_placeholder"
+    category: "paste_leak_review"
+    legal_level: "manual_review_required"
+    review_priority: "scope_required"
+    risk_base: 75
+    requires_scope: true
+    source_home: "https://controlc.com"
+    suggested_action: "ControlC paste bağlantıları manuel review inbox üzerinden analiz edilmeli; otomatik crawling ve credential kullanımı yapılmamalı."
+
+  - id: breach_notification_manual
+    name: "Breach Notification Manual Sources"
+    enabled: false
+    adapter: "manual_placeholder"
+    category: "breach_notification"
+    legal_level: "open_public_or_user_reported"
+    review_priority: "manual_review"
+    risk_base: 65
+    suggested_action: "Resmi ihlal bildirimi, kurum bildirimi veya kullanıcı tarafından sağlanan veri üzerinden olay kaydı açılmalı."
+
+  - id: manual_osint_sources
+    name: "Manual OSINT Sources Placeholder"
+    enabled: false
+    adapter: "manual_placeholder"
+    category: "manual_review"
+    legal_level: "manual_review_required"
+    review_priority: "legal_review_required"
+    risk_base: 40
+    suggested_action: "Manuel kaynaklar eklenmeden önce yasal/operasyonel uygunluk kontrolü yapılmalı."
+
+  - id: telegram_discord_exports
+    name: "Telegram Discord Export Parser"
+    enabled: false
+    adapter: "export_placeholder"
+    category: "export_parser"
+    legal_level: "user_provided_export_only"
+    review_priority: "user_export_only"
+    risk_base: 50
+    suggested_action: "Sadece kullanıcı tarafından sağlanan export dosyaları parse edilmeli; kapalı gruba katılım veya yetkisiz erişim yapılmamalı."
+
+  - id: high_risk_darkweb_intel_placeholder
+    name: "High-Risk Dark Web Intel Placeholder"
+    enabled: false
+    adapter: "manual_placeholder"
+    category: "high_risk_intel"
+    legal_level: "high_risk_manual_legal_review_required"
+    review_priority: "strict_manual_review"
+    risk_base: 90
+    requires_manual_legal_review: true
+    suggested_action: "Aktif katılım, sızma, davet satın alma veya illegal market işlemi yapılmadan; yalnızca yasal/izinli rapor, üçüncü taraf istihbarat veya kullanıcı sağladığı delil üzerinden kayıt açılmalı."
+
+
+

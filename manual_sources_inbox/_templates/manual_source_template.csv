@@ -1,0 +1,4 @@
+﻿source_id,category,title,url,observed_at,legal_level,risk_base,evidence_ref,notes
+vendor_advisories,vendor_advisory,"Örnek Vendor Advisory","https://vendor.example/security/advisory","2026-05-05","open_public_web",55,"case-ref-001","Kurum ürün envanteriyle eşleştirilecek örnek advisory kaydı."
+breach_notification_manual,breach_notification,"Örnek Breach Notification","","2026-05-05","open_public_or_user_reported",70,"case-ref-002","Kullanıcı veya resmi bildirim üzerinden gelen örnek ihlal bildirimi."
+paste_leak_manual_review,paste_leak_review,"Örnek Paste/Leak Review","","2026-05-05","manual_review_required",80,"case-ref-003","Açık webde görülen, manuel inceleme gerektiren örnek leak göstergesi."

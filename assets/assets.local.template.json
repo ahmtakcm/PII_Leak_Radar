@@ -1,0 +1,125 @@
+﻿{
+    "schema_version":  "2.0",
+    "project":  "PII Leak Radar",
+    "mode":  "local",
+    "description":  "Gerçek takip assetleri için lokal şablon. Gerçek değerleri sadece assets.local.json içinde tut. Bu template örnek/placeholder içerir.",
+    "default_context_keywords":  [
+                                     "leak",
+                                     "dump",
+                                     "combo",
+                                     "database",
+                                     "telegram",
+                                     "discord",
+                                     "market",
+                                     "satilik",
+                                     "satis",
+                                     "sizinti",
+                                     "breach",
+                                     "panel",
+                                     "log",
+                                     "stealer",
+                                     "credential",
+                                     "password",
+                                     "invite",
+                                     "davet"
+                                 ],
+    "assets":  [
+                   {
+                       "asset_id":  "person_001",
+                       "asset_kind":  "person",
+                       "display_name":  "KISI_ADI_PLACEHOLDER",
+                       "sensitivity":  "high",
+                       "aliases":  [
+                                       "RUMUZ_PLACEHOLDER",
+                                       "ALIAS_PLACEHOLDER"
+                                   ],
+                       "emails":  [
+                                      "ornek.kisi@example.com"
+                                  ],
+                       "phones":  [
+                                      "+905551112233"
+                                  ],
+                       "usernames":  [
+                                         "kullaniciadi_placeholder"
+                                     ],
+                       "keywords":  [
+                                        "ozel takip kelimesi placeholder"
+                                    ],
+                       "enabled":  true
+                   },
+                   {
+                       "asset_id":  "organization_001",
+                       "asset_kind":  "organization",
+                       "display_name":  "KURUM_ADI_PLACEHOLDER",
+                       "sensitivity":  "medium",
+                       "aliases":  [
+                                       "KURUM_ALIAS_PLACEHOLDER"
+                                   ],
+                       "domains":  [
+                                       "example.org"
+                                   ],
+                       "subdomains":  [
+                                          "login.example.org",
+                                          "portal.example.org"
+                                      ],
+                       "emails":  [
+                                      "security@example.org"
+                                  ],
+                       "keywords":  [
+                                        "kurum database placeholder",
+                                        "kurum leak placeholder"
+                                    ],
+                       "enabled":  true
+                   },
+                   {
+                       "asset_id":  "digital_identity_001",
+                       "asset_kind":  "digital_identity",
+                       "display_name":  "DIGITAL_IDENTITY_PLACEHOLDER",
+                       "sensitivity":  "medium",
+                       "usernames":  [
+                                         "handle_placeholder",
+                                         "@handle_placeholder"
+                                     ],
+                       "profile_urls":  [
+                                            "https://example.org/profile/placeholder"
+                                        ],
+                       "emails":  [
+
+                                  ],
+                       "phones":  [
+
+                                  ],
+                       "keywords":  [
+                                        "handle leak placeholder"
+                                    ],
+                       "enabled":  true
+                   },
+                   {
+                       "asset_id":  "domain_001",
+                       "asset_kind":  "domain",
+                       "display_name":  "DOMAIN_PLACEHOLDER",
+                       "sensitivity":  "medium",
+                       "domains":  [
+                                       "example.net"
+                                   ],
+                       "subdomains":  [
+                                          "api.example.net",
+                                          "login.example.net"
+                                      ],
+                       "keywords":  [
+                                        "example.net dump placeholder"
+                                    ],
+                       "enabled":  true
+                   },
+                   {
+                       "asset_id":  "keyword_001",
+                       "asset_kind":  "custom_keyword",
+                       "display_name":  "CUSTOM_KEYWORD_PLACEHOLDER",
+                       "sensitivity":  "low",
+                       "keywords":  [
+                                        "ozel risk kelimesi placeholder"
+                                    ],
+                       "enabled":  true
+                   }
+               ]
+}

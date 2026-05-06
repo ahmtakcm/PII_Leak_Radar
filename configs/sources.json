@@ -1,0 +1,105 @@
+[
+  {
+    "id": "SRC-0001",
+    "name": "Yerel input klasörü",
+    "type": "forensic_note",
+    "access_type": "own_asset",
+    "status": "active",
+    "tags": [
+      "local",
+      "input",
+      "analysis"
+    ],
+    "legal_basis": "Kullanıcı tarafından sağlanan yerel dosyalar.",
+    "path_or_ref": "input/",
+    "notes": "PII Leak Radar input klasörü.",
+    "created_at": "2026-05-04T21:47:52+03:00",
+    "updated_at": "2026-05-04T21:47:52+03:00"
+  },
+  {
+    "id": "SRC-0002",
+    "name": "İhbar / ekran görüntüsü notları",
+    "type": "user_report",
+    "access_type": "user_report",
+    "status": "active",
+    "tags": [
+      "ihbar",
+      "evidence",
+      "manual"
+    ],
+    "legal_basis": "Kullanıcıya gelen ihbar veya delil notu.",
+    "path_or_ref": "evidence/",
+    "notes": "Ekran görüntüsü, OCR metni veya manuel delil notları.",
+    "created_at": "2026-05-04T21:47:52+03:00",
+    "updated_at": "2026-05-04T21:47:52+03:00"
+  },
+  {
+    "id": "SRC-0003",
+    "name": "Açık tehdit kaynağı notları",
+    "type": "threat_feed_public",
+    "access_type": "public",
+    "status": "watch",
+    "tags": [
+      "threat-intel",
+      "public",
+      "watch"
+    ],
+    "legal_basis": "Açık ve yasal tehdit istihbaratı kaynaklarından manuel not.",
+    "path_or_ref": "source_notes/",
+    "notes": "Otomatik toplama yapmaz; manuel kaynak notları için yer tutucu.",
+    "created_at": "2026-05-04T21:47:52+03:00",
+    "updated_at": "2026-05-04T21:47:52+03:00"
+  },
+  {
+    "id": "SRC-0004",
+    "name": "Telegram export örneği - ihbar dosyası",
+    "type": "telegram_export",
+    "access_type": "export",
+    "status": "active",
+    "tags": [
+      "telegram",
+      "export",
+      "ihbar",
+      "pii-risk"
+    ],
+    "legal_basis": "Kullanıcı tarafından sağlanan export dosyası; aktif kanal araması yapılmadı.",
+    "path_or_ref": "input\\telegram_export.json",
+    "notes": "Ön inceleme için kayıt altına alındı.",
+    "created_at": "2026-05-04T21:48:53+03:00",
+    "updated_at": "2026-05-04T21:48:53+03:00"
+  },
+  {
+    "id": "SRC-0005",
+    "name": "Discord chat log - ihbar",
+    "type": "discord_export",
+    "access_type": "export",
+    "status": "active",
+    "tags": [
+      "discord",
+      "export",
+      "ihbar"
+    ],
+    "legal_basis": "Kullanıcı tarafından sağlanan log/export.",
+    "path_or_ref": "input\\discord_chat_log.txt",
+    "notes": "Yerel analiz yapılacak.",
+    "created_at": "2026-05-04T21:48:56+03:00",
+    "updated_at": "2026-05-04T21:48:56+03:00"
+  },
+  {
+    "id": "SRC-0006",
+    "name": "Açık tehdit istihbaratı manuel not",
+    "type": "threat_feed_public",
+    "access_type": "public",
+    "status": "watch",
+    "tags": [
+      "threat-intel",
+      "public",
+      "manual"
+    ],
+    "legal_basis": "Açık kaynak manuel inceleme notu.",
+    "path_or_ref": "source_notes\\manual_threat_notes.md",
+    "notes": "Otomatik toplama yapılmaz.",
+    "created_at": "2026-05-04T21:49:02+03:00",
+    "updated_at": "2026-05-04T21:49:02+03:00"
+  }
+]

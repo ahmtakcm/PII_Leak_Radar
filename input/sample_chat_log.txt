@@ -1,0 +1,5 @@
+﻿Bu satır örnek testtir: tc sorgu panel reklamı iddiası.
+Başka bir satır: gsm sorgu botu ve üyelik paketi reklamı görüldü.
+Ödeme izi örneği: iban veya kripto ödeme istendiği iddia edildi.
+Adres sorgu ve aile sorgu vaat eden mesaj örneği.
+Normal sohbet satırı, riskli bir şey yok.

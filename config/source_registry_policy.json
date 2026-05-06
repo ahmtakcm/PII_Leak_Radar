@@ -1,0 +1,255 @@
+﻿{
+    "version":  "3.0",
+    "project":  "PII Leak Radar",
+    "sprint":  "Sprint 3 - Source Activation \u0026 Safe Connectors",
+    "mode":  "dry-run",
+    "alerts_enabled":  false,
+    "mask_sensitive":  true,
+    "raw_sensitive_output":  false,
+    "policy_rules":  {
+                         "public_open_feeds_can_auto_run":  true,
+                         "user_provided_exports_can_run":  true,
+                         "manual_import_can_run":  true,
+                         "scoped_public_code_search_requires_scope":  true,
+                         "owned_chat_ingest_requires_allowlist":  true,
+                         "paste_sources_require_manual_review":  true,
+                         "high_risk_sources_require_legal_review":  true,
+                         "closed_group_intrusion_allowed":  false,
+                         "illegal_market_crawling_allowed":  false,
+                         "credential_use_allowed":  false,
+                         "bypass_allowed":  false
+                     },
+    "source_classes":  [
+                           {
+                               "class_id":  "public_open_feed",
+                               "activation_status":  "auto_allowed",
+                               "examples":  [
+                                                "cisa_kev",
+                                                "nvd_recent",
+                                                "urlhaus_recent"
+                                            ],
+                               "requirements":  [
+                                                    "open_public_source",
+                                                    "dry_run",
+                                                    "mask_sensitive"
+                                                ]
+                           },
+                           {
+                               "class_id":  "open_api_requires_key",
+                               "activation_status":  "auto_allowed_if_key_configured",
+                               "examples":  [
+                                                "otx_subscribed"
+                                            ],
+                               "requirements":  [
+                                                    "valid_api_key",
+                                                    "open_api_terms",
+                                                    "dry_run",
+                                                    "mask_sensitive"
+                                                ]
+                           },
+                           {
+                               "class_id":  "user_provided_export",
+                               "activation_status":  "allowed",
+                               "examples":  [
+                                                "telegram_discord_exports"
+                                            ],
+                               "requirements":  [
+                                                    "user_supplied_file",
+                                                    "offline_parse_only",
+                                                    "mask_sensitive"
+                                                ]
+                           },
+                           {
+                               "class_id":  "manual_import",
+                               "activation_status":  "allowed",
+                               "examples":  [
+                                                "manual_osint_sources",
+                                                "breach_notification_manual"
+                                            ],
+                               "requirements":  [
+                                                    "user_supplied_file_or_note",
+                                                    "offline_parse_only",
+                                                    "mask_sensitive"
+                                                ]
+                           },
+                           {
+                               "class_id":  "scoped_public_code_search",
+                               "activation_status":  "scope_required",
+                               "examples":  [
+                                                "github_public_code_search"
+                                            ],
+                               "requirements":  [
+                                                    "config_scope_yml_defined",
+                                                    "allowed_domains_or_keywords",
+                                                    "no_secret_exposure"
+                                                ]
+                           },
+                           {
+                               "class_id":  "vendor_advisory",
+                               "activation_status":  "allowed",
+                               "examples":  [
+                                                "vendor_advisories"
+                                            ],
+                               "requirements":  [
+                                                    "open_public_web",
+                                                    "no_auth_required",
+                                                    "dry_run"
+                                                ]
+                           },
+                           {
+                               "class_id":  "owned_telegram_ingest",
+                               "activation_status":  "allowlist_required",
+                               "examples":  [
+                                                "owned_telegram_channels",
+                                                "owned_telegram_groups"
+                                            ],
+                               "requirements":  [
+                                                    "allowed_channel_or_group_id",
+                                                    "bot_authorized_by_owner",
+                                                    "no_auto_join"
+                                                ]
+                           },
+                           {
+                               "class_id":  "owned_discord_ingest",
+                               "activation_status":  "allowlist_required",
+                               "examples":  [
+                                                "owned_discord_servers",
+                                                "owned_discord_channels"
+                                            ],
+                               "requirements":  [
+                                                    "allowed_server_or_channel_id",
+                                                    "bot_authorized_by_owner",
+                                                    "no_auto_join"
+                                                ]
+                           },
+                           {
+                               "class_id":  "paste_manual_review",
+                               "activation_status":  "manual_review_required",
+                               "examples":  [
+                                                "paste_leak_manual_review",
+                                                "pastebin_manual_review",
+                                                "github_gist_manual_review",
+                                                "rentry_manual_review",
+                                                "ghostbin_manual_review",
+                                                "controlc_manual_review"
+                                            ],
+                               "requirements":  [
+                                                    "manual_source_submission",
+                                                    "no_bulk_scrape",
+                                                    "no_raw_credential_collection"
+                                                ]
+                           },
+                           {
+                               "class_id":  "high_risk_context",
+                               "activation_status":  "legal_review_required",
+                               "examples":  [
+                                                "high_risk_darkweb_intel_placeholder",
+                                                "illegal_market_context",
+                                                "closed_group_context"
+                                            ],
+                               "requirements":  [
+                                                    "manual_legal_review",
+                                                    "no_access_or_transaction",
+                                                    "risk_classification_only"
+                                                ]
+                           }
+                       ],
+    "existing_sources_policy":  [
+                                    {
+                                        "source_id":  "cisa_kev",
+                                        "current_status":  "active",
+                                        "class_id":  "public_open_feed",
+                                        "target_status":  "keep_active"
+                                    },
+                                    {
+                                        "source_id":  "nvd_recent",
+                                        "current_status":  "active",
+                                        "class_id":  "public_open_feed",
+                                        "target_status":  "keep_active"
+                                    },
+                                    {
+                                        "source_id":  "urlhaus_recent",
+                                        "current_status":  "active",
+                                        "class_id":  "public_open_feed",
+                                        "target_status":  "keep_active"
+                                    },
+                                    {
+                                        "source_id":  "otx_subscribed",
+                                        "current_status":  "active",
+                                        "class_id":  "open_api_requires_key",
+                                        "target_status":  "keep_active_if_key_configured"
+                                    },
+                                    {
+                                        "source_id":  "github_public_code_search",
+                                        "current_status":  "scope_required",
+                                        "class_id":  "scoped_public_code_search",
+                                        "target_status":  "activate_after_scope"
+                                    },
+                                    {
+                                        "source_id":  "vendor_advisories",
+                                        "current_status":  "placeholder",
+                                        "class_id":  "vendor_advisory",
+                                        "target_status":  "activate_as_open_public_web"
+                                    },
+                                    {
+                                        "source_id":  "paste_leak_manual_review",
+                                        "current_status":  "scope_required",
+                                        "class_id":  "paste_manual_review",
+                                        "target_status":  "manual_review_only"
+                                    },
+                                    {
+                                        "source_id":  "pastebin_manual_review",
+                                        "current_status":  "scope_required",
+                                        "class_id":  "paste_manual_review",
+                                        "target_status":  "manual_review_only"
+                                    },
+                                    {
+                                        "source_id":  "github_gist_manual_review",
+                                        "current_status":  "scope_required",
+                                        "class_id":  "paste_manual_review",
+                                        "target_status":  "manual_review_only"
+                                    },
+                                    {
+                                        "source_id":  "rentry_manual_review",
+                                        "current_status":  "scope_required",
+                                        "class_id":  "paste_manual_review",
+                                        "target_status":  "manual_review_only"
+                                    },
+                                    {
+                                        "source_id":  "ghostbin_manual_review",
+                                        "current_status":  "scope_required",
+                                        "class_id":  "paste_manual_review",
+                                        "target_status":  "manual_review_only"
+                                    },
+                                    {
+                                        "source_id":  "controlc_manual_review",
+                                        "current_status":  "scope_required",
+                                        "class_id":  "paste_manual_review",
+                                        "target_status":  "manual_review_only"
+                                    },
+                                    {
+                                        "source_id":  "breach_notification_manual",
+                                        "current_status":  "placeholder",
+                                        "class_id":  "manual_import",
+                                        "target_status":  "activate_as_manual_import"
+                                    },
+                                    {
+                                        "source_id":  "manual_osint_sources",
+                                        "current_status":  "placeholder",
+                                        "class_id":  "manual_import",
+                                        "target_status":  "activate_as_manual_import"
+                                    },
+                                    {
+                                        "source_id":  "telegram_discord_exports",
+                                        "current_status":  "placeholder",
+                                        "class_id":  "user_provided_export",
+                                        "target_status":  "activate_as_offline_export_parser"
+                                    },
+                                    {
+                                        "source_id":  "high_risk_darkweb_intel_placeholder",
+                                        "current_status":  "legal_review_required",
+                                        "class_id":  "high_risk_context",
+                                        "target_status":  "keep_legal_review_required"
+                                    }
+                                ]
+}
