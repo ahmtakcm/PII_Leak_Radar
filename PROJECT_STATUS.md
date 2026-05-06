@@ -65,6 +65,8 @@ The default full pipeline no longer attempts live public feed fetches. Live feed
 - Added live-fetch policy gates for network, auth, credential use, and manual-review-only connectors.
 - Added regression tests for legacy registry IDs, wrapped public-feed adapters, and auth-blocked OTX live fetch.
 - Added GitHub Actions CI, PR template, issue templates, and `SECURITY.md`.
+- Added GitHub release packaging workflow for clean sanitized source artifacts.
+- Moved historical sprint/step notes into `docs/archive/`.
 - Expanded `.gitignore` for generated reports, local data, cache, logs, backups, and local secrets.
 
 ## Recommended Operating Flow
@@ -79,7 +81,6 @@ The default full pipeline no longer attempts live public feed fetches. Live feed
 
 ## Next Improvements
 
-- Move live feed adapter behavior into the policy-aware connector interface.
 - Add optional branch protection in GitHub requiring the CI workflow before merge.
-- Add release packaging workflow after the repo history is stable.
-- Move older sprint notes into `docs/archive/` after confirming no operational links depend on their root paths.
+- Add a release note generator/changelog once tagged releases start.
+- Add connector health fixtures for live feed parser shape validation without network access.

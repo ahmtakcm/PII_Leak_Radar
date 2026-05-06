@@ -1,0 +1,79 @@
+name: Release Package
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    name: Build clean package
+    runs-on: windows-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: py -m pip install -r requirements.txt
+
+      - name: Verify
+        run: py .\pii_radar.py verify
+
+      - name: Stage clean source package
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          $stage = Join-Path $env:RUNNER_TEMP "PII_Leak_Radar"
+          New-Item -ItemType Directory -Force -Path $stage | Out-Null
+
+          $exclude = @(
+            ".git",
+            "__pycache__",
+            ".test_tmp",
+            ".venv",
+            "venv",
+            "data",
+            "logs",
+            "reports",
+            "backups",
+            "output",
+            "exports_inbox",
+            "manual_sources_inbox",
+            "paste_manual_review_inbox"
+          )
+
+          Get-ChildItem -Force | ForEach-Object {
+            if ($exclude -contains $_.Name) {
+              return
+            }
+            Copy-Item $_.FullName (Join-Path $stage $_.Name) -Recurse -Force
+          }
+
+          $manifest = @{
+            name = "PII_Leak_Radar"
+            generated_at = (Get-Date).ToString("s")
+            source_sha = "${{ github.sha }}"
+            sanitized = $true
+            excluded = $exclude
+          }
+          $manifest | ConvertTo-Json -Depth 5 | Set-Content -Encoding UTF8 (Join-Path $stage "PACKAGE_MANIFEST.json")
+
+          Compress-Archive -Path "$stage\*" -DestinationPath "$env:RUNNER_TEMP\PII_Leak_Radar_clean.zip" -Force
+
+      - name: Upload package artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: PII_Leak_Radar_clean
+          path: ${{ runner.temp }}\PII_Leak_Radar_clean.zip
+          if-no-files-found: error
