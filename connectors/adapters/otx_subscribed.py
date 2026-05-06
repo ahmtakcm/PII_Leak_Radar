@@ -1,4 +1,5 @@
 from connectors.base import SafeConnector, ConnectorDecision
+from adapters.otx_adapter import OtxAdapter
 
 
 class OtxSubscribedConnector(SafeConnector):
@@ -14,6 +15,7 @@ class OtxSubscribedConnector(SafeConnector):
     adapter_name = "OtxSubscribedConnector"
     requires_network = True
     requires_auth = True
+    legacy_adapter_class = OtxAdapter
 
     def dry_run(self) -> ConnectorDecision:
         decision = super().dry_run()

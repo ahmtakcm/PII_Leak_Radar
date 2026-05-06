@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field, asdict
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Type
 
 
 @dataclass
@@ -41,6 +41,7 @@ class SafeConnector:
     requires_auth: bool = False
     supports_local_files: bool = False
     supports_manual_review: bool = False
+    legacy_adapter_class: Optional[Type[Any]] = None
 
     def __init__(self, source_record: Optional[Dict[str, Any]] = None, runtime_policy: Optional[Dict[str, Any]] = None):
         self.source_record = source_record or {}
@@ -84,3 +85,31 @@ class SafeConnector:
                 "no alert delivery",
             ],
         )
+
+    def live_block_reasons(self) -> List[str]:
+        reasons: List[str] = []
+
+        if self.requires_network and not self.runtime_policy.get("network_enabled", False):
+            reasons.append("network_disabled")
+
+        if self.requires_auth and not self.runtime_policy.get("auth_enabled", False):
+            reasons.append("auth_disabled")
+
+        if self.requires_auth and not self.runtime_policy.get("credential_use_enabled", False):
+            reasons.append("credential_use_disabled")
+
+        if self.supports_manual_review and not self.runtime_policy.get("manual_review_execution_enabled", False):
+            reasons.append("manual_review_only")
+
+        return reasons
+
+    def can_fetch_live(self) -> bool:
+        return not self.live_block_reasons()
+
+    def fetch_live(self) -> List[Dict[str, Any]]:
+        if self.live_block_reasons():
+            raise PermissionError("live fetch blocked by policy: " + ",".join(self.live_block_reasons()))
+        if not self.legacy_adapter_class:
+            raise NotImplementedError(f"{self.adapter_name} does not implement live fetch")
+        adapter = self.legacy_adapter_class(self.source_record, timeout=int(self.runtime_policy.get("timeout", 30)))
+        return adapter.fetch()

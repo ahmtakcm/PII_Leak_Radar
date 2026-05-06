@@ -60,6 +60,11 @@ The default full pipeline no longer attempts live public feed fetches. Live feed
 - Changed `verify` to targeted source compilation so generated reports, backups, and stale temp folders do not affect the quality gate.
 - Refactored scope validation and updates into testable helpers.
 - Added scope mutation and unsafe-scope validation tests.
+- Moved live public-feed adapter execution behind the policy-aware `SafeConnector` interface.
+- Updated `run_registry_dry_scan.py` to build connectors through `ConnectorRegistry` instead of using direct legacy adapter mappings.
+- Added live-fetch policy gates for network, auth, credential use, and manual-review-only connectors.
+- Added regression tests for legacy registry IDs, wrapped public-feed adapters, and auth-blocked OTX live fetch.
+- Added GitHub Actions CI, PR template, issue templates, and `SECURITY.md`.
 - Expanded `.gitignore` for generated reports, local data, cache, logs, backups, and local secrets.
 
 ## Recommended Operating Flow
@@ -75,6 +80,6 @@ The default full pipeline no longer attempts live public feed fetches. Live feed
 ## Next Improvements
 
 - Move live feed adapter behavior into the policy-aware connector interface.
-- Continue moving live feed adapter behavior into the policy-aware connector interface.
-- Continue moving live feed adapter behavior into the policy-aware connector interface.
+- Add optional branch protection in GitHub requiring the CI workflow before merge.
+- Add release packaging workflow after the repo history is stable.
 - Move older sprint notes into `docs/archive/` after confirming no operational links depend on their root paths.

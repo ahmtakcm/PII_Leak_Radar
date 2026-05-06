@@ -1,4 +1,5 @@
 from connectors.base import SafeConnector
+from adapters.cisa_kev_adapter import CisaKevAdapter
 
 
 class CisaKevConnector(SafeConnector):
@@ -7,3 +8,4 @@ class CisaKevConnector(SafeConnector):
     adapter_name = "CisaKevConnector"
     requires_network = True
     requires_auth = False
+    legacy_adapter_class = CisaKevAdapter

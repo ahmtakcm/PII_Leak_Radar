@@ -1,4 +1,5 @@
 from connectors.base import SafeConnector
+from adapters.urlhaus_adapter import UrlhausAdapter
 
 
 class UrlHausRecentConnector(SafeConnector):
@@ -7,3 +8,4 @@ class UrlHausRecentConnector(SafeConnector):
     adapter_name = "UrlHausRecentConnector"
     requires_network = True
     requires_auth = False
+    legacy_adapter_class = UrlhausAdapter

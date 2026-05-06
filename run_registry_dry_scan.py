@@ -7,26 +7,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
 
-from adapters.cisa_kev_adapter import CisaKevAdapter
-from adapters.github_code_search_adapter import GitHubCodeSearchAdapter
-from adapters.nvd_adapter import NvdAdapter
-from adapters.otx_adapter import OtxAdapter
-from adapters.urlhaus_adapter import UrlhausAdapter
+from connectors.registry import ConnectorRegistry
 from core.dashboard import write_dashboard
 from core.dedup_store import DedupStore
 from core.policy import recommended_action
 from core.registry_loader import enabled_sources, load_registry
 from core.risk_score import risk_label, score_event
 from core.sanitizer import sanitized_copy
-
-
-ADAPTERS = {
-    "cisa_kev": CisaKevAdapter,
-    "nvd": NvdAdapter,
-    "urlhaus": UrlhausAdapter,
-    "otx": OtxAdapter,
-    "github_code_search": GitHubCodeSearchAdapter,
-}
 
 
 def parse_args():
@@ -102,12 +89,19 @@ def main():
     for source in enabled_sources(registry):
         source_id = source.get("id")
         source_name = source.get("name", source_id)
-        adapter_name = source.get("adapter")
         started = time.perf_counter()
 
-        AdapterCls = ADAPTERS.get(adapter_name)
-        if not AdapterCls:
-            msg = f"adapter yok: {adapter_name}"
+        runtime_policy = {
+            "network_enabled": bool(args.with_network),
+            "auth_enabled": False,
+            "credential_use_enabled": False,
+            "manual_review_execution_enabled": False,
+            "timeout": timeout,
+        }
+
+        connector = ConnectorRegistry.build(source, runtime_policy)
+        if not connector:
+            msg = f"connector yok: {source.get('adapter')}"
             print(f"[SKIP] {source_id}: {msg}")
             record_skipped(store, source_id, source_name, started, "Adapter mapping eklenmeli.")
             skipped_count += 1
@@ -120,15 +114,22 @@ def main():
             skipped_count += 1
             continue
 
-        print(f"[FETCH] {source_id} / {adapter_name}")
+        block_reasons = connector.live_block_reasons()
+        if block_reasons:
+            msg = "policy_blocked:" + ",".join(block_reasons)
+            print(f"[SKIP] {source_id}: {msg}")
+            record_skipped(store, source_id, source_name, started, "Canli fetch policy tarafindan engellendi: " + ",".join(block_reasons))
+            skipped_count += 1
+            continue
+
+        print(f"[FETCH] {source_id} / {connector.adapter_name}")
 
         source_new = 0
         source_duplicate = 0
         fetched_count = 0
 
         try:
-            adapter = AdapterCls(source, timeout=timeout)
-            events = adapter.fetch()
+            events = connector.fetch_live()
             fetched_count = len(events)
         except Exception as exc:
             error_count += 1

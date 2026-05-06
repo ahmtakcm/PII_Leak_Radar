@@ -59,6 +59,13 @@ py .\pii_radar.py verify
 py .\pii_radar.py health
 ```
 
+GitHub Actions runs the same verify gate on Windows:
+
+```powershell
+py -m pip install -r requirements.txt
+py .\pii_radar.py verify
+```
+
 ## Reports
 
 - `reports/dashboard.html`

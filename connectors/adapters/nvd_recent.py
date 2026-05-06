@@ -1,4 +1,5 @@
 from connectors.base import SafeConnector
+from adapters.nvd_adapter import NvdAdapter
 
 
 class NvdRecentConnector(SafeConnector):
@@ -7,3 +8,4 @@ class NvdRecentConnector(SafeConnector):
     adapter_name = "NvdRecentConnector"
     requires_network = True
     requires_auth = False
+    legacy_adapter_class = NvdAdapter

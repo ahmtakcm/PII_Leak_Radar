@@ -50,6 +50,15 @@ class PipelineTests(unittest.TestCase):
 
 
 class ConnectorPolicyTests(unittest.TestCase):
+    def test_registry_build_accepts_legacy_registry_id(self):
+        adapter = ConnectorRegistry.build(
+            {"id": "cisa_kev", "adapter": "cisa_kev", "legal_level": "open_public_feed"},
+            {"network_enabled": False},
+        )
+        self.assertIsNotNone(adapter)
+        self.assertEqual(adapter.source_record["source_id"], "cisa_kev")
+        self.assertIn("network_disabled", adapter.live_block_reasons())
+
     def test_paste_sources_are_manual_review_connectors(self):
         for source_id in [
             "pastebin_manual_review",
@@ -65,6 +74,24 @@ class ConnectorPolicyTests(unittest.TestCase):
             self.assertIsNotNone(adapter)
             self.assertFalse(adapter.requires_network)
             self.assertTrue(adapter.supports_manual_review)
+
+    def test_public_feed_connector_wraps_legacy_live_adapter(self):
+        adapter = ConnectorRegistry.build(
+            {"id": "urlhaus_recent", "adapter": "urlhaus", "legal_level": "open_public_feed"},
+            {"network_enabled": True, "timeout": 1},
+        )
+        self.assertIsNotNone(adapter)
+        self.assertTrue(adapter.can_fetch_live())
+        self.assertIsNotNone(adapter.legacy_adapter_class)
+
+    def test_auth_connector_blocks_live_fetch_without_credential_policy(self):
+        adapter = ConnectorRegistry.build(
+            {"id": "otx_subscribed", "adapter": "otx", "legal_level": "open_api_requires_key"},
+            {"network_enabled": True, "auth_enabled": False, "credential_use_enabled": False},
+        )
+        self.assertIsNotNone(adapter)
+        self.assertIn("auth_disabled", adapter.live_block_reasons())
+        self.assertIn("credential_use_disabled", adapter.live_block_reasons())
 
 
 class PasteParserTests(unittest.TestCase):

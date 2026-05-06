@@ -47,14 +47,41 @@ class ConnectorRegistry:
 
     @classmethod
     def build(cls, source_record: Dict[str, Any], runtime_policy: Dict[str, Any]) -> Optional[SafeConnector]:
-        source_id = str(source_record.get("source_id") or "")
+        source_id = str(source_record.get("source_id") or source_record.get("id") or "")
         class_id = str(source_record.get("class_id") or "")
+        if not class_id:
+            class_id = class_id_for_registry_source(source_record)
         adapter_class = cls.get_adapter_class(source_id, class_id)
         if not adapter_class:
             return None
-        return adapter_class(source_record=source_record, runtime_policy=runtime_policy)
+        normalized = dict(source_record)
+        normalized.setdefault("source_id", source_id)
+        normalized.setdefault("class_id", class_id)
+        return adapter_class(source_record=normalized, runtime_policy=runtime_policy)
 
     @classmethod
     def adapter_name_for(cls, source_id: str, class_id: str = "") -> Optional[str]:
         adapter_class = cls.get_adapter_class(source_id, class_id)
         return adapter_class.__name__ if adapter_class else None
+
+
+def class_id_for_registry_source(source_record: Dict[str, Any]) -> str:
+    legal_level = str(source_record.get("legal_level") or "")
+    category = str(source_record.get("category") or "")
+    adapter = str(source_record.get("adapter") or "")
+
+    if legal_level == "open_api_requires_key":
+        return "open_api_requires_key"
+    if legal_level == "open_public_feed" or adapter in {"cisa_kev", "nvd", "urlhaus"}:
+        return "public_open_feed"
+    if category == "vendor_advisory":
+        return "vendor_advisory"
+    if category in {"manual_review", "breach_notification"}:
+        return "manual_import"
+    if category == "export_parser":
+        return "user_provided_export"
+    if category == "paste_leak_review":
+        return "paste_manual_review"
+    if "high_risk" in legal_level:
+        return "high_risk_context"
+    return ""
