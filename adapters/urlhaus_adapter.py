@@ -9,7 +9,9 @@ class UrlhausAdapter(BaseAdapter):
         url = self.get("url")
         limit = int(self.get("limit", 50))
         text = self.fetch_text(url)
+        return self.parse_text(text, limit)
 
+    def parse_text(self, text: str, limit: int = 50) -> List[Dict[str, Any]]:
         csv_lines = self._extract_csv_lines(text)
         if not csv_lines:
             return []

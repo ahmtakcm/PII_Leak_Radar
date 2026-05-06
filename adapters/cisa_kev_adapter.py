@@ -7,6 +7,9 @@ class CisaKevAdapter(BaseAdapter):
         url = self.get("url")
         limit = int(self.get("limit", 100))
         data = self.fetch_json(url)
+        return self.parse_payload(data, limit)
+
+    def parse_payload(self, data: Dict[str, Any], limit: int = 100) -> List[Dict[str, Any]]:
         vulns = data.get("vulnerabilities", [])[:limit]
 
         events = []

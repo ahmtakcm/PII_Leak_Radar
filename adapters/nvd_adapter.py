@@ -22,6 +22,9 @@ class NvdAdapter(BaseAdapter):
 
         url = base_url + "?" + urlencode(params)
         data = self.fetch_json(url)
+        return self.parse_payload(data, limit)
+
+    def parse_payload(self, data: Dict[str, Any], limit: int = 50) -> List[Dict[str, Any]]:
         items = data.get("vulnerabilities", [])[:limit]
 
         events = []

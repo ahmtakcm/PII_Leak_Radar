@@ -16,6 +16,7 @@ from run_paste_manual_review import extract_paste_references
 from run_full_pipeline import build_steps, classify_step_status
 from run_maintenance import purge_old_observations, purge_old_source_runs
 from run_release_notes import git_log_range, parse_git_log, render_markdown
+from run_connector_fixture_validate import run_fixture_suite
 
 
 class ReportingTests(unittest.TestCase):
@@ -93,6 +94,11 @@ class ConnectorPolicyTests(unittest.TestCase):
         self.assertIsNotNone(adapter)
         self.assertIn("auth_disabled", adapter.live_block_reasons())
         self.assertIn("credential_use_disabled", adapter.live_block_reasons())
+
+    def test_live_adapter_fixtures_validate_without_network(self):
+        results, errors = run_fixture_suite()
+        self.assertFalse(errors)
+        self.assertEqual({item["status"] for item in results}, {"ok"})
 
 
 class PasteParserTests(unittest.TestCase):

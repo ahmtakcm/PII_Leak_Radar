@@ -1,0 +1,2 @@
+# id,dateadded,url,url_status,threat,tags,urlhaus_link,reporter
+123,2026-05-01 00:00:00,https://example.test/payload,online,malware_download,"fixture,parser",https://urlhaus.example/123,fixture

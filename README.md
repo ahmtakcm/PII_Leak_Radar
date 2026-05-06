@@ -66,6 +66,12 @@ py -m pip install -r requirements.txt
 py .\pii_radar.py verify
 ```
 
+Validate connector parser fixtures without network access:
+
+```powershell
+py .\pii_radar.py connector-fixtures
+```
+
 The release package workflow can be run manually from GitHub Actions or by pushing a `v*` tag. It builds a clean ZIP artifact after the verify gate and excludes local data, reports, logs, inboxes, backups, and cache folders.
 
 Generate local release notes from Git history:

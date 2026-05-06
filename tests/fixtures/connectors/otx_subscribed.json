@@ -1,0 +1,16 @@
+{
+  "results": [
+    {
+      "id": "pulse-fixture-001",
+      "name": "Fixture OTX Pulse",
+      "created": "2026-05-01T00:00:00",
+      "modified": "2026-05-02T00:00:00",
+      "author_name": "fixture",
+      "tags": ["fixture", "parser"],
+      "indicators": [
+        {"type": "domain", "indicator": "example.test"}
+      ],
+      "description": "Fixture OTX pulse used for parser shape validation."
+    }
+  ]
+}

@@ -25,6 +25,9 @@ class OtxAdapter(BaseAdapter):
         url = f"{base_url}/api/v1/pulses/subscribed?limit={limit}"
 
         data = self.fetch_json(url, headers={"X-OTX-API-KEY": api_key})
+        return self.parse_payload(data, limit)
+
+    def parse_payload(self, data: Dict[str, Any], limit: int = 25) -> List[Dict[str, Any]]:
         results = data.get("results", [])[:limit]
 
         events = []

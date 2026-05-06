@@ -15,6 +15,7 @@ COMMANDS = {
     "pipeline": [sys.executable, str(ROOT / "run_full_pipeline.py")],
     "policy": [sys.executable, str(ROOT / "run_source_registry_policy_validate.py")],
     "connectors": [sys.executable, str(ROOT / "run_safe_connectors_dry_run.py")],
+    "connector-fixtures": [sys.executable, str(ROOT / "run_connector_fixture_validate.py")],
     "assets": [sys.executable, str(ROOT / "run_asset_scope_validate.py")],
     "registry": [sys.executable, str(ROOT / "run_registry_dry_scan.py")],
     "maintenance": [sys.executable, str(ROOT / "run_maintenance.py")],
@@ -28,6 +29,7 @@ VERIFY_COMMAND_STEPS = [
     [sys.executable, str(ROOT / "pii_radar.py"), "health"],
     [sys.executable, str(ROOT / "pii_radar.py"), "policy"],
     [sys.executable, str(ROOT / "pii_radar.py"), "connectors"],
+    [sys.executable, str(ROOT / "pii_radar.py"), "connector-fixtures"],
     [sys.executable, str(ROOT / "pii_radar.py"), "pipeline"],
 ]
 
@@ -53,6 +55,7 @@ def parse_args():
 
     sub.add_parser("policy", help="Validate source registry policy")
     sub.add_parser("connectors", help="Run safe connector dry-run")
+    sub.add_parser("connector-fixtures", help="Validate connector parser fixtures without network access")
     sub.add_parser("assets", help="Validate active asset registry")
     release_notes = sub.add_parser("release-notes", help="Generate release notes from git history")
     release_notes.add_argument("--since", default="")

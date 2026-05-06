@@ -1,0 +1,15 @@
+{
+  "vulnerabilities": [
+    {
+      "cveID": "CVE-2026-0001",
+      "vulnerabilityName": "Example Vendor Example Product Vulnerability",
+      "vendorProject": "Example Vendor",
+      "product": "Example Product",
+      "dateAdded": "2026-05-01",
+      "dueDate": "2026-05-22",
+      "knownRansomwareCampaignUse": "Known",
+      "requiredAction": "Apply mitigations per vendor instructions.",
+      "shortDescription": "Fixture vulnerability used for parser shape validation."
+    }
+  ]
+}
