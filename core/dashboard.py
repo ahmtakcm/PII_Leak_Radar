@@ -166,8 +166,12 @@ td {{
 <div class="metric"><div class="label">Kaynak Sayısı</div><div class="value">{stats['source_count']}</div></div>
 <div class="metric"><div class="label">Policy Gate</div><div class="value">{html.escape(ops['policy_status'])}</div></div>
 <div class="metric"><div class="label">Connector Readiness</div><div class="value">{html.escape(ops['connector_status'])}</div></div>
+<div class="metric"><div class="label">Fixture Gate</div><div class="value">{html.escape(ops['fixture_status'])}</div></div>
+<div class="metric"><div class="label">Fixture Errors</div><div class="value">{html.escape(str(ops['fixture_errors']))}</div></div>
 <div class="metric"><div class="label">Network Feeds</div><div class="value">{html.escape(ops['network_feeds'])}</div></div>
 <div class="metric"><div class="label">Connector Warnings</div><div class="value">{html.escape(str(ops['connector_warnings']))}</div></div>
+<div class="metric"><div class="label">Release Workflow</div><div class="value">{html.escape(ops['release_workflow'])}</div></div>
+<div class="metric"><div class="label">Release Notes</div><div class="value">{html.escape(ops['release_notes'])}</div></div>
 <div class="metric"><div class="label">DB Observations</div><div class="value">{html.escape(str(retention['observation_count']))}</div></div>
 <div class="metric"><div class="label">DB Source Runs</div><div class="value">{html.escape(str(retention['source_run_count']))}</div></div>
 <div class="metric"><div class="label">Last Observation</div><div class="value">{html.escape(str(retention['last_observation']))}</div></div>
@@ -264,6 +268,8 @@ def _load_json(path: Path):
 def _load_operational_status(report_dir: Path):
     policy = _load_json(report_dir / "source_registry_policy_validate_report.json")
     connectors = _load_json(report_dir / "safe_connectors_dry_run_results.json")
+    fixtures = _load_json(report_dir / "connector_fixture_validate_report.json")
+    release_notes = _load_json(report_dir / "release_notes.json")
     pipeline = _load_json(report_dir / "full_pipeline_report.json")
 
     connector_summary = connectors.get("summary", {})
@@ -274,11 +280,23 @@ def _load_operational_status(report_dir: Path):
     if pipeline.get("network_feeds_enabled") is True:
         network = "on"
 
+    fixture_summary = fixtures.get("summary", {})
+    if not isinstance(fixture_summary, dict):
+        fixture_summary = {}
+
+    release_summary = release_notes.get("summary", {})
+    if not isinstance(release_summary, dict):
+        release_summary = {}
+
     return {
         "policy_status": str(policy.get("status", "unknown")),
         "connector_status": str(connectors.get("status", connector_summary.get("status", "unknown"))),
         "connector_warnings": connector_summary.get("warning_count", connectors.get("warning_count", 0)),
+        "fixture_status": str(fixtures.get("status", "unknown")),
+        "fixture_errors": fixture_summary.get("error_count", "unknown"),
         "network_feeds": network,
+        "release_workflow": "ready" if (report_dir.parent / ".github" / "workflows" / "release.yml").exists() else "missing",
+        "release_notes": str(release_summary.get("commit_count", "unknown")),
     }
 
 

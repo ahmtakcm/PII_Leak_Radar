@@ -1,0 +1,15 @@
+{
+  "advisories": [
+    {
+      "id": "ADV-2026-001",
+      "title": "Example Vendor Security Advisory",
+      "published": "2026-05-06",
+      "vendor": "Example Vendor",
+      "product": "Example Product",
+      "cve": "CVE-2026-0003",
+      "severity": "high",
+      "url": "https://vendor.example/advisories/ADV-2026-001",
+      "description": "Fixture vendor advisory used for parser shape validation."
+    }
+  ]
+}

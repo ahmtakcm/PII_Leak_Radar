@@ -72,6 +72,9 @@ Validate connector parser fixtures without network access:
 py .\pii_radar.py connector-fixtures
 ```
 
+Use `config/scope.local.example.yml` and `docs/SCOPE_HARDENING.md` as the safe local template before enabling scoped sources.
+GitHub branch protection and release settings are documented in `docs/GITHUB_SETTINGS.md`.
+
 The release package workflow can be run manually from GitHub Actions or by pushing a `v*` tag. It builds a clean ZIP artifact after the verify gate and excludes local data, reports, logs, inboxes, backups, and cache folders.
 
 Generate local release notes from Git history:

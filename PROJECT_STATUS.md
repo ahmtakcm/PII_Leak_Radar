@@ -66,9 +66,13 @@ The default full pipeline no longer attempts live public feed fetches. Live feed
 - Added regression tests for legacy registry IDs, wrapped public-feed adapters, and auth-blocked OTX live fetch.
 - Added GitHub Actions CI, PR template, issue templates, and `SECURITY.md`.
 - Added GitHub release packaging workflow for clean sanitized source artifacts.
+- Added GitHub Release publishing on `v*` tags and documented branch protection settings.
 - Moved historical sprint/step notes into `docs/archive/`.
 - Added CLI release note generation from Git history.
 - Added offline connector parser fixture validation for live feed adapters.
+- Added vendor advisory parser fixture coverage and a concrete adapter shell.
+- Added scope hardening template/runbook for local authorized scope setup.
+- Added dashboard cards for fixture validation and release readiness.
 - Expanded `.gitignore` for generated reports, local data, cache, logs, backups, and local secrets.
 
 ## Recommended Operating Flow
@@ -84,5 +88,5 @@ The default full pipeline no longer attempts live public feed fetches. Live feed
 ## Next Improvements
 
 - Add optional branch protection in GitHub requiring the CI workflow before merge.
-- Add GitHub release publishing after the package artifact workflow is validated on tags.
 - Add parser fixture coverage for future enabled connectors as they graduate from placeholders.
+- Add scoped GitHub public code search fixture coverage before enabling live code search.

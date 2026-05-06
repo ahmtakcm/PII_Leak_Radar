@@ -1,0 +1,62 @@
+# Copy this file to config/scope.yml and replace example values locally.
+# Do not commit real organization domains, product names, repositories, or paste source notes.
+
+version: "3.0"
+project: "PII Leak Radar"
+mode: "dry-run"
+alerts_enabled: false
+mask_sensitive: true
+
+purpose:
+  - "OSINT"
+  - "defense"
+  - "forensic_review"
+  - "risk_monitoring"
+
+global_rules:
+  unauthorized_access_allowed: false
+  credential_use_allowed: false
+  bypass_allowed: false
+  exploit_allowed: false
+  illegal_market_transaction_allowed: false
+  closed_group_intrusion_allowed: false
+  raw_sensitive_output_allowed: false
+  alerts_enabled: false
+
+organization_scope:
+  enabled: true
+  names:
+    - "Example Organization"
+  domains:
+    - "example.com"
+  keywords:
+    - "example-product"
+  notes: "Replace with local authorized scope only."
+
+public_code_search_scope:
+  enabled: true
+  allowed_domains:
+    - "example.com"
+  allowed_keywords:
+    - "example-product"
+  allowed_repositories: []
+  denied_keywords:
+    - "password"
+    - "token"
+    - "secret"
+    - "apikey"
+  notes: "Only scan public code within explicit authorized scope."
+
+paste_scope:
+  manual_review_enabled: true
+  automatic_crawling_enabled: false
+  allowed_sources:
+    - "pastebin"
+    - "github_gist"
+    - "rentry"
+    - "ghostbin"
+    - "controlc"
+  denied_actions:
+    - "bulk_scrape_paste_sites"
+    - "collect_raw_credentials"
+  notes: "Manual review/import only; no bulk crawling."

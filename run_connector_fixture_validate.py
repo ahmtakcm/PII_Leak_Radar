@@ -10,6 +10,7 @@ from adapters.cisa_kev_adapter import CisaKevAdapter
 from adapters.nvd_adapter import NvdAdapter
 from adapters.otx_adapter import OtxAdapter
 from adapters.urlhaus_adapter import UrlhausAdapter
+from adapters.vendor_advisory_adapter import VendorAdvisoryAdapter
 from core.reporting import build_report, write_json_report
 
 
@@ -76,6 +77,12 @@ def run_fixture_suite(fixture_dir=FIXTURE_DIR):
             "source_id": "otx_subscribed",
             "path": fixture_dir / "otx_subscribed.json",
             "adapter": OtxAdapter(source_record("otx_subscribed", "otx", "threat_intel_pulses", 70)),
+            "parser": lambda adapter, path: adapter.parse_payload(load_json(path), 10),
+        },
+        {
+            "source_id": "vendor_advisories",
+            "path": fixture_dir / "vendor_advisories.json",
+            "adapter": VendorAdvisoryAdapter(source_record("vendor_advisories", "vendor_advisory", "vendor_advisory", 55)),
             "parser": lambda adapter, path: adapter.parse_payload(load_json(path), 10),
         },
     ]

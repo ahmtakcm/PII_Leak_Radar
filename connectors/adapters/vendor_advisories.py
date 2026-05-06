@@ -1,4 +1,5 @@
 from connectors.base import SafeConnector
+from adapters.vendor_advisory_adapter import VendorAdvisoryAdapter
 
 
 class VendorAdvisoriesConnector(SafeConnector):
@@ -7,3 +8,4 @@ class VendorAdvisoriesConnector(SafeConnector):
     adapter_name = "VendorAdvisoriesConnector"
     requires_network = True
     requires_auth = False
+    legacy_adapter_class = VendorAdvisoryAdapter
