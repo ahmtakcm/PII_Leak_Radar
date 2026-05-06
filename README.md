@@ -68,6 +68,12 @@ py .\pii_radar.py verify
 
 The release package workflow can be run manually from GitHub Actions or by pushing a `v*` tag. It builds a clean ZIP artifact after the verify gate and excludes local data, reports, logs, inboxes, backups, and cache folders.
 
+Generate local release notes from Git history:
+
+```powershell
+py .\pii_radar.py release-notes
+```
+
 ## Reports
 
 - `reports/dashboard.html`

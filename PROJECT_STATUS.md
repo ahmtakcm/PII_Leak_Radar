@@ -67,6 +67,7 @@ The default full pipeline no longer attempts live public feed fetches. Live feed
 - Added GitHub Actions CI, PR template, issue templates, and `SECURITY.md`.
 - Added GitHub release packaging workflow for clean sanitized source artifacts.
 - Moved historical sprint/step notes into `docs/archive/`.
+- Added CLI release note generation from Git history.
 - Expanded `.gitignore` for generated reports, local data, cache, logs, backups, and local secrets.
 
 ## Recommended Operating Flow
@@ -82,5 +83,5 @@ The default full pipeline no longer attempts live public feed fetches. Live feed
 ## Next Improvements
 
 - Add optional branch protection in GitHub requiring the CI workflow before merge.
-- Add a release note generator/changelog once tagged releases start.
 - Add connector health fixtures for live feed parser shape validation without network access.
+- Add GitHub release publishing after the package artifact workflow is validated on tags.

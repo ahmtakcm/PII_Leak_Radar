@@ -19,6 +19,7 @@ COMMANDS = {
     "registry": [sys.executable, str(ROOT / "run_registry_dry_scan.py")],
     "maintenance": [sys.executable, str(ROOT / "run_maintenance.py")],
     "evidence": [sys.executable, str(ROOT / "run_evidence_package.py")],
+    "release-notes": [sys.executable, str(ROOT / "run_release_notes.py")],
 }
 
 
@@ -53,6 +54,9 @@ def parse_args():
     sub.add_parser("policy", help="Validate source registry policy")
     sub.add_parser("connectors", help="Run safe connector dry-run")
     sub.add_parser("assets", help="Validate active asset registry")
+    release_notes = sub.add_parser("release-notes", help="Generate release notes from git history")
+    release_notes.add_argument("--since", default="")
+    release_notes.add_argument("--max-count", type=int, default=50)
 
     registry = sub.add_parser("registry", help="Run source registry scan")
     registry.add_argument("--with-network", action="store_true", help="Enable live public feed fetches")
@@ -287,6 +291,10 @@ def main():
     elif args.command == "evidence":
         if args.evidence_command == "package":
             command.extend(["--case", args.case])
+    elif args.command == "release-notes":
+        if args.since:
+            command.extend(["--since", args.since])
+        command.extend(["--max-count", str(args.max_count)])
 
     return run_command(command)
 

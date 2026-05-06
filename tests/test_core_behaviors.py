@@ -15,6 +15,7 @@ from run_asset_match_pipeline_report import extract_scan_payload
 from run_paste_manual_review import extract_paste_references
 from run_full_pipeline import build_steps, classify_step_status
 from run_maintenance import purge_old_observations, purge_old_source_runs
+from run_release_notes import git_log_range, parse_git_log, render_markdown
 
 
 class ReportingTests(unittest.TestCase):
@@ -174,6 +175,15 @@ class CliHelperTests(unittest.TestCase):
         manifest = json.loads(result["manifest_path"].read_text(encoding="utf-8"))
         self.assertEqual(manifest["case_id"], "CASE_2026_001")
         self.assertFalse(manifest["raw_sensitive_output"])
+
+    def test_release_notes_parse_and_render_git_log(self):
+        line = "a" * 40 + "\x1fabc1234\x1f2026-05-06\x1fAdd release workflow"
+        commits = parse_git_log(line)
+        self.assertEqual(commits[0]["short_sha"], "abc1234")
+        self.assertEqual(git_log_range("v1.0.0"), "v1.0.0..HEAD")
+        rendered = render_markdown(commits, "v1.0.0")
+        self.assertIn("`abc1234`", rendered)
+        self.assertIn("Add release workflow", rendered)
 
 
 class AssetMatchReportTests(unittest.TestCase):
